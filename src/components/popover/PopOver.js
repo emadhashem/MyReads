@@ -1,35 +1,46 @@
-import React, { useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { update } from '../../services/api';
-export default function BasicPopover({ 
-  id : bookId, data = [], curShelf = "" ,handleChangeShelf : _handleChangeShelf, book }) {
+export default function BasicPopover({
+  id: bookId, data = [], curShelf = "", handleChangeShelf: _handleChangeShelf, book }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
+
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   const handleChangeShelf = async (clickedShelf) => {
-    if(clickedShelf !== curShelf) {
-      await update({id : bookId} , clickedShelf)
+    if (clickedShelf !== curShelf) {
+      await update({ id: bookId }, clickedShelf)
       _handleChangeShelf(clickedShelf)
       data.forEach(item => {
-        if(item.shelf === curShelf) {
+        if (item.shelf === curShelf) {
           item.remove(book)
-        } else if(item.shelf === clickedShelf) {
+        } else if (item.shelf === clickedShelf) {
           item.add(book)
         }
       })
     }
+    handleClose();
+  };
+  async function handleNone() {
+    await update({ id: bookId }, "none")
+    _handleChangeShelf("")
+    data.forEach(item => {
+      if (item.shelf === curShelf) {
+        item.remove(book)
+      }
+    })
     handleClose();
   };
   return (
@@ -58,11 +69,17 @@ export default function BasicPopover({
         }}
       >
         {data.map((item) => (
-          <Typography key = {item.shelf + id} component="p" sx={{ p: 2 }}>
-            <Button variant= {(item.shelf === curShelf) ? "contained" : ""} 
-            onClick={() => handleChangeShelf(item.shelf)}>{item.shelf}</Button>
+          <Typography key={item.shelf + id} component="p" sx={{ p: 2 }}>
+            <Button variant={(item.shelf === curShelf) ? "contained" : ""}
+              onClick={() => handleChangeShelf(item.shelf)}>{item.shelf}</Button>
           </Typography>
         ))}
+        {
+          (curShelf.length) && (<Typography key={'none'} component="p" sx={{ p: 2 }}>
+            <Button
+              onClick={handleNone}>None</Button>
+          </Typography>)
+        }
       </Popover>
     </div>
   );

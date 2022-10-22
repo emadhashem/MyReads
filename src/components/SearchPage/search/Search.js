@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 import { search } from "../../../services/api";
-const maxResults = 50;
+const maxResults = 10;
 function Search({ handleBooksResult = (f) => f }) {
   const [curText, setcurText] = useState("");
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ function Search({ handleBooksResult = (f) => f }) {
     if(!(text.trim())) return handleBooksResult([])
     try {
       let res = await search(text, maxResults);
-      handleBooksResult(res.map(({ id, shelf }) => ({ id, shelf })));
+      handleBooksResult(res.map(({ title , authors, id, shelf, imageLinks }) => ({ title , authors, id, shelf, imageLinks })));
     } catch (error) {
       //console.log(error);
     }

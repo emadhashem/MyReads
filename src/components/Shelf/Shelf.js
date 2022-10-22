@@ -33,7 +33,7 @@ function Shelf({title = "", books = [], actions}) {
                 title = {book.title}
                 authors = {book.authors}
                 actions = {bookStatesAndActions}
-                shelf = {book.shelf}
+                shelfName = {book.shelf}
                 imageLinks = {book.imageLinks}
                 />
               </Grid>

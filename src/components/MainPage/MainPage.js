@@ -11,7 +11,9 @@ function MainPage({setActions}) {
   const navigate = useNavigate()
   useEffect(() => {
     setActions(actionsObj)
+    
     return () => {
+
       setmusetGetBooks(false);
     };
   }, []);

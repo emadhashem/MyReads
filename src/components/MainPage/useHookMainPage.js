@@ -93,12 +93,19 @@ function useHookMainPage() {
   useEffect(() => {
     if (musetGetBooks) {
       const _getBooks = async () => {
-        const res = await api.getAll();
-        const paresing = mainPagehelper.categorizeBooks(res);
-        dispatch({
-          type: "setState",
-          state: paresing,
-        });
+        try {
+          const res = await api.getAll();
+          const paresing = mainPagehelper.categorizeBooks(res);
+          dispatch({
+            type: "setState",
+            state: paresing,
+          });
+        } catch (error) {
+          dispatch({
+            type: "setState",
+            state: {},
+          });
+        }
       };
       _getBooks();
     }

@@ -4,25 +4,9 @@ import BasicPopover from '../popover/PopOver'
 import './book.css'
 function Book({ title: title_,
   authors: authors_,
-  shelf: shelf_,
+  shelfName,
   imageLinks: imageLinks_, actions = [], id }) {
-
-  const [mustFetch, setmustFetch] = useState(true)
-  const [title, settitle] = useState('')
-  const [authors, setauthors] = useState([])
-  const [img, setimg] = useState('')
-  const [shelf, setshelf] = useState('')
-  useEffect(() => {
-    if (mustFetch) {
-      settitle(title_)
-      setauthors(authors_)
-      setimg(imageLinks_.smallThumbnail)
-      setshelf(shelf_)
-    }
-    return () => {
-      setmustFetch(false)
-    }
-  }, [])
+  const [shelf, setshelf] = useState(shelfName)
   function handleChangeShelf(newShelf) {
     setshelf(newShelf)
   }
@@ -34,18 +18,19 @@ function Book({ title: title_,
       justifyContent: 'space-between'
     }} >
       <div className='img-holder' >
-        <img alt={title} src={img} />
+        <img alt={title_} src={imageLinks_.smallThumbnail} />
         <BasicPopover id={id} data={actions} book={{
           title: title_, authors: authors_,
-          shelf: shelf_,
+          shelf,
           imageLinks: imageLinks_,
-          id
+          id,
+          
         }}
           curShelf={shelf} handleChangeShelf={handleChangeShelf} />
       </div>
       <div className='title-authors-holder' >
-        <p>{title}</p>
-        <p>{authors}</p>
+        <p>{title_}</p>
+        <p>{authors_}</p>
       </div>
     </Card>
   )
