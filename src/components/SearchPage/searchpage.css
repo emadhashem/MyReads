@@ -1,0 +1,10 @@
+.search-page {
+    width: 100%;
+    min-height: 90vh;
+    display: flex;
+}
+.results-holder {
+    
+    margin-top: 100px;
+
+}
