@@ -18,7 +18,7 @@ function Book({ title: title_,
       justifyContent: 'space-between'
     }} >
       <div className='img-holder' >
-        <img alt={title_} src={imageLinks_.smallThumbnail} />
+        <img alt={title_} src={imageLinks_?.smallThumbnail} />
         <BasicPopover id={id} data={actions} book={{
           title: title_, authors: authors_,
           shelf,

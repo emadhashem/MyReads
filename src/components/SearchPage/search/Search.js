@@ -3,23 +3,26 @@ import React, { useState } from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
 import { search } from "../../../services/api";
+import { debounce } from "../../../helpers/debounce";
 const maxResults = 10;
+
 function Search({ handleBooksResult = (f) => f }) {
   const [curText, setcurText] = useState("");
   const navigate = useNavigate();
-  async function handleChange(text = "") {
-    setcurText(text);
-    if(!(text.trim())) return handleBooksResult([])
+  const handleSearch = async function handleChange(text = "") {
+    if (!(text.trim())) return handleBooksResult([])
     try {
       let res = await search(text, maxResults);
-      handleBooksResult(res.map(({ title , authors, id, shelf, imageLinks }) => ({ title , authors, id, shelf, imageLinks })));
+      handleBooksResult(res.map(({ title, authors, id, shelf, imageLinks }) => (
+        { title, authors, id, shelf, imageLinks }
+      )));
     } catch (error) {
-      //console.log(error);
     }
   }
+  const handleChange = debounce(handleSearch, 500)
 
   return (
-    <AppBar sx={{ padding: 1, backgroundColor : 'green' }} position="fixed">
+    <AppBar sx={{ padding: 1, backgroundColor: 'green' }} position="fixed">
       <div
         className="container"
         style={{
@@ -49,7 +52,9 @@ function Search({ handleBooksResult = (f) => f }) {
         </Typography>
         <FilledInput
           value={curText}
-          onChange={(event) => handleChange(event.target.value)}
+          onChange={(event) => {
+            setcurText(event.target.value);
+            handleChange(event.target.value)}}
           sx={{
             width: "90%",
             ":focus-within": {

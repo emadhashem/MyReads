@@ -9,14 +9,18 @@ import SearchPage from './components/SearchPage/SearchPage';
 import Footer from './components/Footer/Footer';
 function App() {
   const [actions, setactions] = useState({})
+  const [books , setbooks] = useState();
   function setActions(actions) {
     setactions(actions)
+  }
+  function setBooksToState(books) {
+    setbooks(books)
   }
   return (
     <>
       <Routes>
-        <Route path='/' element = {<MainPage setActions = {setActions} />} />
-        <Route path='/search' element = {<SearchPage actions = {actions} />} />
+        <Route path='/' element = {<MainPage setActions = {setActions} setBooksToState = {setBooksToState} />} />
+        <Route path='/search' element = {<SearchPage actions = {actions} books = {books} />} />
       </Routes>
       <Footer />
     </>

@@ -4,16 +4,23 @@ import Book from "../Book/Book";
 import Search from "./search/Search";
 import { Grid } from "@mui/material";
 import { get } from "../../services/api";
-function SearchPage({ actions }) {
+function SearchPage({ actions, books }) {
   const [booksResult, setbooksResult] = useState([]);
   function handleBooksResult(arr = []) {
-   // return console.log(arr)
-    setbooksResult(arr);
+  
+    setbooksResult(arr.map(book => ({
+      ...book,
+      shelf : getShelf(books, book.id)
+    })));
   }
-  async function getShelf(id) {
-    const res = await get(id)
-    const {shelf} = res;
-    return res
+  const  getShelf = (books , id) => {
+    let ret = "none"
+    Object.keys(books).forEach(shelfType => {
+      books[shelfType].data.forEach(book => {
+        if(book.id === id) ret = shelfType
+      })
+    })
+    return ret
   }
   const bookStatesAndActions = [
     {

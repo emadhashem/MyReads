@@ -10,13 +10,12 @@ export default function BasicPopover({
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-
   };
 
   const handleClose = () => {
     setAnchorEl(null);
   };
-  
+
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
   const handleChangeShelf = async (clickedShelf) => {
@@ -35,7 +34,7 @@ export default function BasicPopover({
   };
   async function handleNone() {
     await update({ id: bookId }, "none")
-    _handleChangeShelf("")
+    _handleChangeShelf("none")
     data.forEach(item => {
       if (item.shelf === curShelf) {
         item.remove(book)
@@ -74,12 +73,12 @@ export default function BasicPopover({
               onClick={() => handleChangeShelf(item.shelf)}>{item.shelf}</Button>
           </Typography>
         ))}
-        {
-          (curShelf.length) && (<Typography key={'none'} component="p" sx={{ p: 2 }}>
-            <Button
-              onClick={handleNone}>None</Button>
-          </Typography>)
-        }
+
+        <Typography key={'none'} component="p" sx={{ p: 2 }}>
+        <Button variant={("none" === curShelf) ? "contained" : ""}
+            onClick={handleNone}>None</Button>
+        </Typography>
+
       </Popover>
     </div>
   );

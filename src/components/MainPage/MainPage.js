@@ -6,14 +6,16 @@ import Shelf from "../Shelf/Shelf";
 import "./mainpage.css";
 
 import useHookMainPage from "./useHookMainPage";
-function MainPage({setActions}) {
+function MainPage({setActions, setBooksToState}) {
   const { books, actionsObj, setmusetGetBooks, dispatch } = useHookMainPage();
   const navigate = useNavigate()
   useEffect(() => {
+    setBooksToState(books)
+  }, [books])
+  
+  useEffect(() => {
     setActions(actionsObj)
-    
     return () => {
-
       setmusetGetBooks(false);
     };
   }, []);
